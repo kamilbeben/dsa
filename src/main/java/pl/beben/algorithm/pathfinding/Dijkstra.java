@@ -72,6 +72,8 @@ public class Dijkstra {
       // Now, through all available edges ([4]), reach the `oppositeVertice` ([5]) to check if this is the quickest path to it ([6]).
       // [4]
       for (final var edge : verticeToEdges.get(vertice)) {
+        assertThatEdgeIsValid(edge);
+
         final var edgeCost = verticeCost + edge.cost();
         // [5]
         final var oppositeVertice = getOppositeVertice(vertice, edge);
@@ -88,6 +90,12 @@ public class Dijkstra {
 
     // All that's left to do is to map that to the output
     return createPathSegments(verticeToBestEdge, destination);
+  }
+
+  private static void assertThatEdgeIsValid(Graph.Edge edge) {
+    if (edge.cost() < 0) {
+      throw new IllegalArgumentException("Edge " + edge + " is not valid. Reason: Cost must not be negative");
+    }
   }
 
   private static <DATA> Map<Graph.Vertice<DATA>, Set<Graph.Edge<DATA>>> createVerticeToEdgesMap(Graph<DATA> graph) {

@@ -124,4 +124,21 @@ public class DijkstraTest {
     Assert.assertEquals(expectedPath, Dijkstra.findPath(graph, startingPoint, destination));
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void throwsExceptionWhenEncountersNegativeEdge() {
+    // given
+    final var graph = new Graph<String>();
+    final var townA = graph.createVertice("Town A");
+    final var townB = graph.createVertice("Town B");
+
+    final var aaEdge = graph.createEdge(townA, townA, 1, BIDIRECTIONAL);
+    final var abEdge = graph.createEdge(townA, townB, -3, BIDIRECTIONAL);
+
+    var startingPoint = townA;
+    var destination = townB;
+
+    // when
+    Dijkstra.findPath(graph, startingPoint, destination);
+  }
+
 }

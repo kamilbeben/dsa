@@ -24,9 +24,6 @@ public class Graph<DATA> {
   }
 
   public Edge<DATA> createEdge(Vertice<DATA> firstVertice, Vertice<DATA> secondVertice, int weight, Edge.Type type) {
-    if (weight < 0)
-      throw new IllegalArgumentException("Edge's weight must not be negative");
-
     final var edge = new Edge<>(firstVertice, secondVertice, weight, type);
     final var edgeIsUnique = edges.add(edge);
 
@@ -67,8 +64,8 @@ public class Graph<DATA> {
     }
 
   public enum Type {
-      BIDIRECTIONAL, // eg 'two way street'
-      UNIDIRECTIONAL // eg 'one way street'
+      BIDIRECTIONAL, // eg 'two-way street'
+      UNIDIRECTIONAL // eg 'one-way street'
     }
   }
 
