@@ -29,7 +29,7 @@ public class DijkstraAlgorithmTest {
     //          |                          |
     //          +--------(5)-------------→[G]
     //
-    // [X] - vertice
+    // [X] - vertex
     // (0) - edge's weight
     //
     // Dataset borrowed from "Spanning Tree"'s video called "How Dijkstra's Algorithm Works" (https://www.youtube.com/watch?v=EFg3u_E6eHU)

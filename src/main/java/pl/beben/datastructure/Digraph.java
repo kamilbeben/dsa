@@ -14,21 +14,21 @@ public class Digraph {
   final Set<String> vertices = new HashSet<>();
   final Set<Edge> edges = new HashSet<>();
 
-  public String createVertice(String vertice) {
-    final var verticeIsUnique = vertices.add(vertice);
+  public String createVertice(String vertex) {
+    final var vertexIsUnique = vertices.add(vertex);
 
-    if (verticeIsUnique)
-      return vertice;
+    if (vertexIsUnique)
+      return vertex;
     else
       throw new IllegalArgumentException("Edge is not unique");
   }
 
-  public Edge createEdge(String vertice, String adjacentVertice) {
-    return createEdge(vertice, adjacentVertice, null);
+  public Edge createEdge(String vertex, String adjacentVertice) {
+    return createEdge(vertex, adjacentVertice, null);
   }
 
-  public Edge createEdge(String vertice, String adjacentVertice, Integer weight) {
-    final var edge = new Edge(vertice, adjacentVertice, weight);
+  public Edge createEdge(String vertex, String adjacentVertice, Integer weight) {
+    final var edge = new Edge(vertex, adjacentVertice, weight);
     final var edgeIsUnique = edges.add(edge);
 
     if (edgeIsUnique)
@@ -37,21 +37,21 @@ public class Digraph {
       throw new IllegalArgumentException("Edge is not unique");
   }
 
-  public Set<Edge> computeEdges(String vertice) {
+  public Set<Edge> computeEdges(String vertex) {
     return getEdges().stream()
-      .filter(edge -> edge.vertice().equals(vertice))
+      .filter(edge -> edge.vertex().equals(vertex))
       .collect(Collectors.toSet());
   }
 
   public record Edge(
-    String vertice,
+    String vertex,
     String adjacentVertice,
     Integer weight
   ) {
 
     @Override
     public String toString() {
-      return vertice + " -> " + adjacentVertice + (
+      return vertex + " -> " + adjacentVertice + (
         weight != null
           ? " (" + weight + ")"
           : ""

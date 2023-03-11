@@ -16,12 +16,12 @@ class DigraphPathRetracingAlgorithm {
   /**
    * @return list of edges needed to be followed in order to get to the destination, {@literal null} if such path does not exist
    */
-  static List<Digraph.Edge> retracePath(Map<String, Digraph.Edge> verticeToEdgeLeadingToIt,
+  static List<Digraph.Edge> retracePath(Map<String, Digraph.Edge> vertexToEdgeLeadingToIt,
                                         String destination,
                                         Digraph.Edge nullEdgePlaceholder) {
 
     // If the destination was reached, the default `nullEdgePlaceholder` would have been overridden
-    if (verticeToEdgeLeadingToIt.get(destination) == nullEdgePlaceholder) {
+    if (vertexToEdgeLeadingToIt.get(destination) == nullEdgePlaceholder) {
       log.debug("destination \"{}\" has not been reached - returning null", destination);
       return null;
     }
@@ -29,12 +29,12 @@ class DigraphPathRetracingAlgorithm {
     final var path = new ArrayList<Digraph.Edge>();
 
     // Starting at the `destination`
-    var edge = verticeToEdgeLeadingToIt.get(destination);
+    var edge = vertexToEdgeLeadingToIt.get(destination);
 
     do {
       // reconstruct the path by retracing algorithm's steps and going backwards to the `beginning`
       path.add(edge);
-      edge = verticeToEdgeLeadingToIt.get(edge.vertice());
+      edge = vertexToEdgeLeadingToIt.get(edge.vertex());
       // edge being null means that we've reached the `beginning`
     } while (edge != nullEdgePlaceholder);
 

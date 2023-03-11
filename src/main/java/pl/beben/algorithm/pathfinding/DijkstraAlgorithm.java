@@ -37,66 +37,66 @@ public class DijkstraAlgorithm {
       return Collections.emptyList();
     }
 
-    final var verticeToBestWeight = digraph.getVertices().stream()
+    final var vertexToBestWeight = digraph.getVertices().stream()
       .collect(
         Collectors.toMap(
           Function.identity(),
-          vertice -> vertice.equals(beginning)
+          vertex -> vertex.equals(beginning)
             ? 0 // There is no weight to get to where we are already
-            : MAX_VALUE // This will be overridden when we reach given vertice
+            : MAX_VALUE // This will be overridden when we reach given vertex
         ));
 
-    // Best edge so far - is going to be overridden along with verticeToBestWeight
-    final var verticeToBestEdge = digraph.getVertices().stream()
+    // Best edge so far - is going to be overridden along with vertexToBestWeight
+    final var vertexToBestEdge = digraph.getVertices().stream()
       .collect(
         Collectors.toMap(
           Function.identity(),
-          vertice -> NULL_EDGE // Made so to avoid collector's NullPointerException
+          vertex -> NULL_EDGE // Made so to avoid collector's NullPointerException
         ));
 
     final var unexploredVertices = new HashSet<>(digraph.getVertices());
 
-    // The goal is to iterate over each vertice in a digraph ([1]), each time picking the one having the lowest weight ([2]).
+    // The goal is to iterate over each vertex in a digraph ([1]), each time picking the one having the lowest weight ([2]).
 
-    // Each time we're exploring a next `vertice` it is guaranteed that we've found the shortest path to it -
-    // - hence if the `vertice` is equal to the `destination` then we've found the shorted path to it ([3]).
+    // Each time we're exploring a next `vertex` it is guaranteed that we've found the shortest path to it -
+    // - hence if the `vertex` is equal to the `destination` then we've found the shorted path to it ([3]).
 
     // [1]
     while (!unexploredVertices.isEmpty()) {
       // [2]
-      final var vertice = pickVerticeHavingLowestWeight(unexploredVertices, verticeToBestWeight);
-      final var verticeWeight = verticeToBestWeight.get(vertice);
-      unexploredVertices.remove(vertice);
-      log.debug("Exploring vertice {}", vertice);
+      final var vertex = pickVerticeHavingLowestWeight(unexploredVertices, vertexToBestWeight);
+      final var vertexWeight = vertexToBestWeight.get(vertex);
+      unexploredVertices.remove(vertex);
+      log.debug("Exploring vertex {}", vertex);
 
       // [3]
-      if (vertice.equals(destination)) {
+      if (vertex.equals(destination)) {
         log.debug("Found the shortest path to the destination - break");
         break;
       }
 
       // Now, going through all available edges ([4]), reach the `adjacentVertice` ([5]) to check if this is the shortest path to it ([6]).
       // [4]
-      for (final var edge : digraph.computeEdges(vertice)) {
+      for (final var edge : digraph.computeEdges(vertex)) {
         log.debug("Trying edge {}", edge);
         assertThatEdgeIsValid(edge);
-        final var edgeWeight = verticeWeight + edge.weight();
+        final var edgeWeight = vertexWeight + edge.weight();
         // [5]
         final var adjacentVertice = edge.adjacentVertice();
         // [6]
-        if (verticeToBestWeight.get(adjacentVertice) > edgeWeight) {
-          log.debug("Edge {} is the shortest path - overriding verticeToBestWeight and verticeToBestEdge");
-          verticeToBestWeight.put(adjacentVertice, edgeWeight);
-          verticeToBestEdge.put(adjacentVertice, edge);
+        if (vertexToBestWeight.get(adjacentVertice) > edgeWeight) {
+          log.debug("Edge {} is the shortest path - overriding vertexToBestWeight and vertexToBestEdge");
+          vertexToBestWeight.put(adjacentVertice, edgeWeight);
+          vertexToBestEdge.put(adjacentVertice, edge);
         }
       }
     }
 
-    // `verticeToBestEdge` now stores the quickest way to all* vertices that are reachable
+    // `vertexToBestEdge` now stores the quickest way to all* vertices that are reachable
     // from the `beginning` (*that is, up until the `destination`, see ([3]))
 
     // All that's left to do is to map that to the output
-    return retracePath(verticeToBestEdge, destination, NULL_EDGE);
+    return retracePath(vertexToBestEdge, destination, NULL_EDGE);
   }
 
   private static void assertThatEdgeIsValid(Digraph.Edge edge) {
@@ -105,9 +105,9 @@ public class DijkstraAlgorithm {
     }
   }
 
-  private static String pickVerticeHavingLowestWeight(Set<String> vertices, Map<String, Integer> verticeToWeight) {
+  private static String pickVerticeHavingLowestWeight(Set<String> vertices, Map<String, Integer> vertexToWeight) {
     return vertices.stream()
-      .min(Comparator.comparing(verticeToWeight::get))
+      .min(Comparator.comparing(vertexToWeight::get))
       .orElseThrow();
   }
 

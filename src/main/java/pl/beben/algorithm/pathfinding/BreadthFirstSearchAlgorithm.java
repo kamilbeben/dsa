@@ -37,23 +37,23 @@ public class BreadthFirstSearchAlgorithm {
 
     // `addLast` and `pollFirst` makes this a FIFO queue
     // replacing `pollFirst` with `pollLast` would turn it into a LIFO, and hence - turn BreadthFirstSearch to DepthFirstSearch
-    final var verticeQueue = new LinkedList<String>();
-    verticeQueue.addLast(beginning);
+    final var vertexQueue = new LinkedList<String>();
+    vertexQueue.addLast(beginning);
 
-    queue: while (!verticeQueue.isEmpty()) {
-      final var vertice = verticeQueue.pollFirst();
-      log.debug("Polled vertice {}", vertice);
+    queue: while (!vertexQueue.isEmpty()) {
+      final var vertex = vertexQueue.pollFirst();
+      log.debug("Polled vertex {}", vertex);
 
-      for (final var edge : digraph.computeEdges(vertice)) {
+      for (final var edge : digraph.computeEdges(vertex)) {
         final var adjacentVertice = edge.adjacentVertice();
-        final var verticeIsExploredForTheFirstTime = exploredVertices.add(adjacentVertice);
-        if (!verticeIsExploredForTheFirstTime) {
+        final var vertexIsExploredForTheFirstTime = exploredVertices.add(adjacentVertice);
+        if (!vertexIsExploredForTheFirstTime) {
           log.debug("Tried to explore adjacentVertice {}, but it is already explored - continue", adjacentVertice);
           continue;
         }
 
         log.debug("Exploring adjacentVertice {}", adjacentVertice);
-        verticeQueue.addLast(adjacentVertice);
+        vertexQueue.addLast(adjacentVertice);
         exploredVerticeToEdge.put(adjacentVertice, edge);
 
         if (adjacentVertice.equals(destination)) {
