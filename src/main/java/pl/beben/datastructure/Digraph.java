@@ -3,6 +3,7 @@ package pl.beben.datastructure;
 import lombok.Getter;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Directed graph structure
@@ -22,7 +23,11 @@ public class Digraph {
       throw new IllegalArgumentException("Edge is not unique");
   }
 
-  public Edge createEdge(String vertice, String adjacentVertice, int weight) {
+  public Edge createEdge(String vertice, String adjacentVertice) {
+    return createEdge(vertice, adjacentVertice, null);
+  }
+
+  public Edge createEdge(String vertice, String adjacentVertice, Integer weight) {
     final var edge = new Edge(vertice, adjacentVertice, weight);
     final var edgeIsUnique = edges.add(edge);
 
@@ -32,15 +37,25 @@ public class Digraph {
       throw new IllegalArgumentException("Edge is not unique");
   }
 
+  public Set<Edge> computeEdges(String vertice) {
+    return getEdges().stream()
+      .filter(edge -> edge.vertice().equals(vertice))
+      .collect(Collectors.toSet());
+  }
+
   public record Edge(
     String vertice,
     String adjacentVertice,
-    int weight
+    Integer weight
   ) {
 
     @Override
     public String toString() {
-      return vertice + " --> " + adjacentVertice + " (" + weight + ")";
+      return vertice + " -> " + adjacentVertice + (
+        weight != null
+          ? " (" + weight + ")"
+          : ""
+      );
     }
   }
 

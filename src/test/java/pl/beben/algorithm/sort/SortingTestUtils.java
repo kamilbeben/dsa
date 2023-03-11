@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SortingTestUtils {
-
   static void testInPlaceSortingAlgorithm(Consumer<List<? extends Comparable>> sortingFunction, int size) {
     // given
     final var expectedOutput = createSortedList(size);

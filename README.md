@@ -17,4 +17,5 @@ You can use it however you want without asking for permission, though it would b
      - Quick sort ([implementation](src/main/java/pl/beben/algorithm/sort/QuickSort.java), [test](src/test/java/pl/beben/algorithm/sort/QuickSortTest.java))
      - Merge sort ([implementation](src/main/java/pl/beben/algorithm/sort/MergeSort.java), [test](src/test/java/pl/beben/algorithm/sort/MergeSortTest.java))
    - Path finding
+     - Breadth first search algorithm ([implementation](src/main/java/pl/beben/algorithm/pathfinding/BreadthFirstSearchAlgorithm.java), [test](src/test/java/pl/beben/algorithm/pathfinding/BreadthFirstSearchAlgorithmTest.java))
      - Dijkstra's algorithm ([implementation](src/main/java/pl/beben/algorithm/pathfinding/DijkstraAlgorithm.java), [test](src/test/java/pl/beben/algorithm/pathfinding/DijkstraAlgorithmTest.java))

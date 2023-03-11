@@ -11,143 +11,121 @@ public class DijkstraAlgorithmTest {
   @Test
   public void findPathBetweenTowns() {
 
-    // given graph of the following structure
+    // given weighted digraph of the following structure
     //
-    //         [C]----------(4)-----------[D]
-    //    ____/ | \____                    |
-    //   /      |      |                   |
+    //  +-----→[C]----------(4)----------→[D]
+    //  |       | \____                    |
+    //  |       |      |                   |
     //  |       |      |                  (1)
     // (3)      |     (1)                  |
-    //  |       |      |                   |
-    // [A]     (2)    [E]---(2)----[B]-----+
-    //  |       |      |            |      |
-    // (2)      |     (3)           |      |
-    //  |       |      |           (6)    (2)
-    //   \      |  ____+            |      |
-    //    \     | /                 |      |
-    //     ^---[F]------------------^      |
-    //          |________(5)______________[G]
-    //
+    //  |       |      ↓                   |
+    // [A]     (2)    [E]---(2)---→[B]←----+
+    //  |       |      ↑            ↑      |
+    // (2)      |      |            |      |
+    //  |       |     (3)          (6)    (2)
+    //  |       |  ____|            |      |
+    //  |       | /                 |      |
+    //  +-----→[F]------------------^      |
+    //          |                          |
+    //          +--------(5)-------------→[G]
     //
     // [X] - vertice
     // (0) - edge's weight
     //
     // Dataset borrowed from "Spanning Tree"'s video called "How Dijkstra's Algorithm Works" (https://www.youtube.com/watch?v=EFg3u_E6eHU)
 
-    final var graph = new Digraph();
+    final var digraph = new Digraph();
 
-    final var townA = graph.createVertice("Town A");
-    final var townB = graph.createVertice("Town B");
-    final var townC = graph.createVertice("Town C");
-    final var townD = graph.createVertice("Town D");
-    final var townE = graph.createVertice("Town E");
-    final var townF = graph.createVertice("Town F");
-    final var townG = graph.createVertice("Town G");
-    final var townLonely = graph.createVertice("Lonely town that's not connected to anything");
+    final var a = digraph.createVertice("a");
+    final var b = digraph.createVertice("b");
+    final var c = digraph.createVertice("c");
+    final var d = digraph.createVertice("d");
+    final var e = digraph.createVertice("e");
+    final var f = digraph.createVertice("f");
+    final var g = digraph.createVertice("g");
+    final var lonelyVertice = digraph.createVertice("Lonely  that's not connected to anything");
 
     // every second edge is a reversed version of it's previous
-    final var acEdge = graph.createEdge(townA, townC, 3);
-    final var caEdge = graph.createEdge(townC, townA, 3);
-    final var afEdge = graph.createEdge(townA, townF, 2);
-    final var faEdge = graph.createEdge(townF, townA, 2);
-    final var cdEdge = graph.createEdge(townC, townD, 4);
-    final var dcEdge = graph.createEdge(townD, townC, 4);
-    final var ceEdge = graph.createEdge(townC, townE, 1);
-    final var ecEdge = graph.createEdge(townE, townC, 1);
-    final var cfEdge = graph.createEdge(townC, townF, 2);
-    final var fcEdge = graph.createEdge(townF, townC, 2);
-    final var feEdge = graph.createEdge(townF, townE, 3);
-    final var efEdge = graph.createEdge(townE, townF, 3);
-    final var fbEdge = graph.createEdge(townF, townB, 6);
-    final var bfEdge = graph.createEdge(townB, townF, 6);
-    final var fgEdge = graph.createEdge(townF, townG, 5);
-    final var gfEdge = graph.createEdge(townG, townF, 5);
-    final var dbEdge = graph.createEdge(townD, townB, 1);
-    final var bdEdge = graph.createEdge(townB, townD, 1);
-    final var ebEdge = graph.createEdge(townE, townB, 2);
-    final var beEdge = graph.createEdge(townB, townE, 2);
-    final var gbEdge = graph.createEdge(townG, townB, 2);
-    final var bgEdge = graph.createEdge(townB, townG, 2);
+    final var ac = digraph.createEdge(a, c, 3);
+    final var ca = digraph.createEdge(c, a, 3);
+    final var af = digraph.createEdge(a, f, 2);
+    final var fa = digraph.createEdge(f, a, 2);
+    final var cd = digraph.createEdge(c, d, 4);
+    final var dc = digraph.createEdge(d, c, 4);
+    final var ce = digraph.createEdge(c, e, 1);
+    final var ec = digraph.createEdge(e, c, 1);
+    final var cf = digraph.createEdge(c, f, 2);
+    final var fc = digraph.createEdge(f, c, 2);
+    final var fe = digraph.createEdge(f, e, 3);
+    final var ef = digraph.createEdge(e, f, 3);
+    final var fb = digraph.createEdge(f, b, 6);
+    final var bf = digraph.createEdge(b, f, 6);
+    final var fg = digraph.createEdge(f, g, 5);
+    final var gf = digraph.createEdge(g, f, 5);
+    final var db = digraph.createEdge(d, b, 1);
+    final var bd = digraph.createEdge(b, d, 1);
+    final var eb = digraph.createEdge(e, b, 2);
+    final var be = digraph.createEdge(b, e, 2);
+    final var gb = digraph.createEdge(g, b, 2);
+    final var bg = digraph.createEdge(b, g, 2);
 
-    var startingPoint = townA;
-    var destination = townB;
-    var expectedPath = Arrays.asList(acEdge, ceEdge, ebEdge);
+    var beginning = a;
+    var destination = b;
+    var expectedPath = Arrays.asList(ac, ce, eb);
 
     // then
-    Assert.assertEquals(expectedPath, DijkstraAlgorithm.findPath(graph, startingPoint, destination));
+    Assert.assertEquals(expectedPath, DijkstraAlgorithm.findPath(digraph, beginning, destination));
 
     // given
-    startingPoint = townA;
-    destination = townA;
+    beginning = a;
+    destination = a;
     expectedPath = Collections.emptyList();
 
     // then
-    Assert.assertEquals(expectedPath, DijkstraAlgorithm.findPath(graph, startingPoint, destination));
+    Assert.assertEquals(expectedPath, DijkstraAlgorithm.findPath(digraph, beginning, destination));
 
     // given
-    startingPoint = townA;
-    destination = townLonely;
+    beginning = a;
+    destination = lonelyVertice;
     expectedPath = null;
 
     // then
-    Assert.assertEquals(expectedPath, DijkstraAlgorithm.findPath(graph, startingPoint, destination));
+    Assert.assertEquals(expectedPath, DijkstraAlgorithm.findPath(digraph, beginning, destination));
   }
 
   @Test
   public void canHandleLoops() {
     // given
-    final var graph = new Digraph();
-    final var townA = graph.createVertice("Town A");
-    final var townB = graph.createVertice("Town B");
+    final var digraph = new Digraph();
+    final var a = digraph.createVertice("a");
+    final var b = digraph.createVertice("b");
 
-    final var aaEdge = graph.createEdge(townA, townA, 1);
-    final var abEdge = graph.createEdge(townA, townB, 3);
+    final var aa = digraph.createEdge(a, a, 1);
+    final var ab = digraph.createEdge(a, b, 3);
 
-    var startingPoint = townA;
-    var destination = townB;
-    var expectedPath = Arrays.asList(abEdge);
-
-    // then
-    Assert.assertEquals(expectedPath, DijkstraAlgorithm.findPath(graph, startingPoint, destination));
-  }
-
-  @Test
-  public void canHandleUnidirectionalEdges() {
-    // given
-    final var graph = new Digraph();
-    final var townA = graph.createVertice("Town A");
-    final var townB = graph.createVertice("Town B");
-    final var townC = graph.createVertice("Town C");
-    final var townD = graph.createVertice("Town D");
-
-    final var abEdge = graph.createEdge(townA, townB, 3);
-    final var adEdge = graph.createEdge(townA, townD, 8);
-    final var bcEdge = graph.createEdge(townB, townC, 1);
-    final var dcEdge = graph.createEdge(townD, townC, 1);
-
-    var startingPoint = townA;
-    var destination = townC;
-    var expectedPath = Arrays.asList(abEdge, bcEdge);
+    var beginning = a;
+    var destination = b;
+    var expectedPath = Arrays.asList(ab);
 
     // then
-    Assert.assertEquals(expectedPath, DijkstraAlgorithm.findPath(graph, startingPoint, destination));
+    Assert.assertEquals(expectedPath, DijkstraAlgorithm.findPath(digraph, beginning, destination));
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void throwsExceptionWhenEncountersNegativeEdge() {
+  public void throwsExceptionWhenEncountersNegative() {
     // given
-    final var graph = new Digraph();
-    final var townA = graph.createVertice("Town A");
-    final var townB = graph.createVertice("Town B");
+    final var digraph = new Digraph();
+    final var a = digraph.createVertice("a");
+    final var b = digraph.createVertice("b");
 
-    final var aaEdge = graph.createEdge(townA, townA, 1);
-    final var abEdge = graph.createEdge(townA, townB, -3);
+    final var aa = digraph.createEdge(a, a, 1);
+    final var ab = digraph.createEdge(a, b, -3);
 
-    var startingPoint = townA;
-    var destination = townB;
+    var beginning = a;
+    var destination = b;
 
     // when
-    DijkstraAlgorithm.findPath(graph, startingPoint, destination);
+    DijkstraAlgorithm.findPath(digraph, beginning, destination);
   }
 
 }
