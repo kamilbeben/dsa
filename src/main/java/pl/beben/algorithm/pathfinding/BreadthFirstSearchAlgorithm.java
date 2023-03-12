@@ -35,8 +35,6 @@ public class BreadthFirstSearchAlgorithm {
     final var exploredVertices = new HashSet<String>();
     exploredVertices.add(beginning);
 
-    // `addLast` and `pollFirst` makes this a FIFO queue
-    // replacing `pollFirst` with `pollLast` would turn it into a LIFO, and hence - turn BreadthFirstSearch to DepthFirstSearch
     final var vertexQueue = new LinkedList<String>();
     vertexQueue.addLast(beginning);
 
