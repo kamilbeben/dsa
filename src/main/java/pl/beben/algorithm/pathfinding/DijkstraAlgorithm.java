@@ -26,10 +26,10 @@ public class DijkstraAlgorithm {
    * Performance could be improved by introducing a heuristic function (look up A-star algorithm).
    *
    * @param digraph a directed, weighted graph
-   * @return see {@link pl.beben.algorithm.pathfinding.DigraphPathRetracingAlgorithm#retracePath(java.util.Map, String, pl.beben.datastructure.Digraph.Edge)}
+   * @return see {@link pl.beben.algorithm.pathfinding.DigraphPathRetracingAlgorithm#retracePath(java.util.Map, Object, pl.beben.datastructure.Digraph.Edge)}
    * @throws java.lang.IllegalArgumentException if it finds an {@link Digraph.Edge} with negative {@link Digraph.Edge#weight()}
    */
-  public static List<Digraph.Edge> findPath(Digraph digraph, String beginning, String destination) {
+  public static <VERTEX> List<Digraph.Edge<VERTEX>> findPath(Digraph<VERTEX> digraph, VERTEX beginning, VERTEX destination) {
     log.debug("Beginning = {}, destination = {}", beginning, destination);
 
     if (beginning.equals(destination)) {
@@ -51,7 +51,7 @@ public class DijkstraAlgorithm {
       .collect(
         Collectors.toMap(
           Function.identity(),
-          vertex -> NULL_EDGE // Made so to avoid collector's NullPointerException
+          vertex -> (Digraph.Edge<VERTEX>) NULL_EDGE // Made so to avoid collector's NullPointerException
         ));
 
     final var unexploredVertices = new HashSet<>(digraph.getVertices());
@@ -99,13 +99,13 @@ public class DijkstraAlgorithm {
     return retracePath(vertexToBestEdge, destination, NULL_EDGE);
   }
 
-  private static void assertThatEdgeIsValid(Digraph.Edge edge) {
+  private static <VERTEX> void assertThatEdgeIsValid(Digraph.Edge<VERTEX> edge) {
     if (edge.weight() < 0) {
       throw new IllegalArgumentException("Edge " + edge + " is not valid. Reason: Weight must not be negative");
     }
   }
 
-  private static String pickVerticeHavingLowestWeight(Set<String> vertices, Map<String, Integer> vertexToWeight) {
+  private static <VERTEX> VERTEX pickVerticeHavingLowestWeight(Set<VERTEX> vertices, Map<VERTEX, Integer> vertexToWeight) {
     return vertices.stream()
       .min(Comparator.comparing(vertexToWeight::get))
       .orElseThrow();

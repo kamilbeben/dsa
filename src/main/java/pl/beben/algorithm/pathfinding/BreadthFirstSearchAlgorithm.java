@@ -20,9 +20,9 @@ public class BreadthFirstSearchAlgorithm {
    * It's faster than Dijkstra, but it doesn't care about edge's weights - which is why it's application is completely different.
    *
    * @param digraph a directed, unweighted graph
-   * @return see {@link pl.beben.algorithm.pathfinding.DigraphPathRetracingAlgorithm#retracePath(java.util.Map, String, pl.beben.datastructure.Digraph.Edge)}
+   * @return see {@link pl.beben.algorithm.pathfinding.DigraphPathRetracingAlgorithm#retracePath(java.util.Map, Object, pl.beben.datastructure.Digraph.Edge)}
    */
-  public static List<Digraph.Edge> findPath(Digraph digraph, String beginning, String destination) {
+  public static <VERTEX> List<Digraph.Edge<VERTEX>> findPath(Digraph<VERTEX> digraph, VERTEX beginning, VERTEX destination) {
     log.debug("Beginning = {}, destination = {}", beginning, destination);
 
     if (beginning.equals(destination)) {
@@ -30,12 +30,12 @@ public class BreadthFirstSearchAlgorithm {
       return Collections.emptyList();
     }
 
-    final var exploredVerticeToEdge = new HashMap<String, Digraph.Edge>();
+    final var exploredVerticeToEdge = new HashMap<VERTEX, Digraph.Edge<VERTEX>>();
 
-    final var exploredVertices = new HashSet<String>();
+    final var exploredVertices = new HashSet<VERTEX>();
     exploredVertices.add(beginning);
 
-    final var vertexQueue = new LinkedList<String>();
+    final var vertexQueue = new LinkedList<VERTEX>();
     vertexQueue.addLast(beginning);
 
     queue: while (!vertexQueue.isEmpty()) {

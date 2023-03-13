@@ -23,7 +23,7 @@ public class BreadthFirstSearchAlgorithmTest {
     //                     |          |
     //                     +--→ H ----+
     //
-    final var digraph = new Digraph();
+    final var digraph = new Digraph<String>();
 
     final var a = digraph.createVertice("a");
     final var b = digraph.createVertice("b");

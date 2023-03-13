@@ -16,9 +16,9 @@ class DigraphPathRetracingAlgorithm {
   /**
    * @return list of edges needed to be followed in order to get to the destination, {@literal null} if such path does not exist
    */
-  static List<Digraph.Edge> retracePath(Map<String, Digraph.Edge> vertexToEdgeLeadingToIt,
-                                        String destination,
-                                        Digraph.Edge nullEdgePlaceholder) {
+  static <VERTEX> List<Digraph.Edge<VERTEX>> retracePath(Map<VERTEX, Digraph.Edge<VERTEX>> vertexToEdgeLeadingToIt,
+                                                         VERTEX destination,
+                                                         Digraph.Edge nullEdgePlaceholder) {
 
     // If the destination was reached, the default `nullEdgePlaceholder` would have been overridden
     if (vertexToEdgeLeadingToIt.get(destination) == nullEdgePlaceholder) {
@@ -26,7 +26,7 @@ class DigraphPathRetracingAlgorithm {
       return null;
     }
 
-    final var path = new ArrayList<Digraph.Edge>();
+    final var path = new ArrayList<Digraph.Edge<VERTEX>>();
 
     // Starting at the `destination`
     var edge = vertexToEdgeLeadingToIt.get(destination);

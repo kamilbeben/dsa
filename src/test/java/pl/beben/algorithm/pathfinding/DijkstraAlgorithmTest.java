@@ -34,7 +34,7 @@ public class DijkstraAlgorithmTest {
     //
     // Dataset borrowed from "Spanning Tree"'s video called "How Dijkstra's Algorithm Works" (https://www.youtube.com/watch?v=EFg3u_E6eHU)
 
-    final var digraph = new Digraph();
+    final var digraph = new Digraph<String>();
 
     final var a = digraph.createVertice("a");
     final var b = digraph.createVertice("b");
@@ -96,7 +96,7 @@ public class DijkstraAlgorithmTest {
   @Test
   public void canHandleLoops() {
     // given
-    final var digraph = new Digraph();
+    final var digraph = new Digraph<String>();
     final var a = digraph.createVertice("a");
     final var b = digraph.createVertice("b");
 
@@ -114,7 +114,7 @@ public class DijkstraAlgorithmTest {
   @Test(expected = IllegalArgumentException.class)
   public void throwsExceptionWhenEncountersNegative() {
     // given
-    final var digraph = new Digraph();
+    final var digraph = new Digraph<String>();
     final var a = digraph.createVertice("a");
     final var b = digraph.createVertice("b");
 

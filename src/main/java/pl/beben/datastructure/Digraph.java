@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
  * Directed graph structure
  */
 @Getter
-public class Digraph {
+public class Digraph<VERTEX> {
 
-  final Set<String> vertices = new HashSet<>();
-  final Set<Edge> edges = new HashSet<>();
+  final Set<VERTEX> vertices = new HashSet<>();
+  final Set<Edge<VERTEX>> edges = new HashSet<>();
 
-  public String createVertice(String vertex) {
+  public VERTEX createVertice(VERTEX vertex) {
     final var vertexIsUnique = vertices.add(vertex);
 
     if (vertexIsUnique)
@@ -23,11 +23,11 @@ public class Digraph {
       throw new IllegalArgumentException("Edge is not unique");
   }
 
-  public Edge createEdge(String vertex, String adjacentVertice) {
+  public Edge createEdge(VERTEX vertex, String adjacentVertice) {
     return createEdge(vertex, adjacentVertice, null);
   }
 
-  public Edge createEdge(String vertex, String adjacentVertice, Integer weight) {
+  public Edge createEdge(VERTEX vertex, String adjacentVertice, Integer weight) {
     final var edge = new Edge(vertex, adjacentVertice, weight);
     final var edgeIsUnique = edges.add(edge);
 
@@ -37,15 +37,15 @@ public class Digraph {
       throw new IllegalArgumentException("Edge is not unique");
   }
 
-  public Set<Edge> computeEdges(String vertex) {
+  public Set<Edge<VERTEX>> computeEdges(VERTEX vertex) {
     return getEdges().stream()
       .filter(edge -> edge.vertex().equals(vertex))
       .collect(Collectors.toSet());
   }
 
-  public record Edge(
-    String vertex,
-    String adjacentVertice,
+  public record Edge<VERTEX>(
+    VERTEX vertex,
+    VERTEX adjacentVertice,
     Integer weight
   ) {
 
