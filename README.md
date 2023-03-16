@@ -11,6 +11,7 @@ You can use it however you want without asking for permission, though it would b
   - Data structures
     - Binary search tree ([implementation](src/main/java/pl/beben/datastructure/BinarySearchTree.java), [test](src/test/java/pl/beben/datastructure/BinarySearchTreeTest.java))
     - Hash table ([implementation](src/main/java/pl/beben/datastructure/HashTable.java), [test](src/test/java/pl/beben/datastructure/HashTableTest.java))
+    - Trie ([implementation](src/main/java/pl/beben/datastructure/Trie.java), [test](src/test/java/pl/beben/datastructure/TrieTest.java))
     - Digraph ([implementation](src/main/java/pl/beben/datastructure/Digraph.java))
   - Algorithms
     - Sorting
