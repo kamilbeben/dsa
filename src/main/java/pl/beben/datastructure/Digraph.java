@@ -1,9 +1,11 @@
 package pl.beben.datastructure;
 
 import lombok.Getter;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Directed graph structure
@@ -12,9 +14,9 @@ import java.util.stream.Collectors;
 public class Digraph<VERTEX> {
 
   final Set<VERTEX> vertices = new HashSet<>();
-  final Set<Edge<VERTEX>> edges = new HashSet<>();
+  final Map<VERTEX, Set<Edge<VERTEX>>> vertexToEdges = new HashMap<>();
 
-  public VERTEX createVertice(VERTEX vertex) {
+  public VERTEX createVertex(VERTEX vertex) {
     final var vertexIsUnique = vertices.add(vertex);
 
     if (vertexIsUnique)
@@ -23,12 +25,13 @@ public class Digraph<VERTEX> {
       throw new IllegalArgumentException("Edge is not unique");
   }
 
-  public Edge createEdge(VERTEX vertex, String adjacentVertice) {
+  public Edge createEdge(VERTEX vertex, VERTEX adjacentVertice) {
     return createEdge(vertex, adjacentVertice, null);
   }
 
-  public Edge createEdge(VERTEX vertex, String adjacentVertice, Integer weight) {
+  public Edge createEdge(VERTEX vertex, VERTEX adjacentVertice, Integer weight) {
     final var edge = new Edge(vertex, adjacentVertice, weight);
+    final var edges = vertexToEdges.computeIfAbsent(vertex, key -> new HashSet<>());
     final var edgeIsUnique = edges.add(edge);
 
     if (edgeIsUnique)
@@ -37,21 +40,19 @@ public class Digraph<VERTEX> {
       throw new IllegalArgumentException("Edge is not unique");
   }
 
-  public Set<Edge<VERTEX>> computeEdges(VERTEX vertex) {
-    return getEdges().stream()
-      .filter(edge -> edge.vertex().equals(vertex))
-      .collect(Collectors.toSet());
+  public Set<Edge<VERTEX>> getEdges(VERTEX vertex) {
+    return vertexToEdges.getOrDefault(vertex, Collections.emptySet());
   }
 
   public record Edge<VERTEX>(
     VERTEX vertex,
-    VERTEX adjacentVertice,
+    VERTEX adjacentVertex,
     Integer weight
   ) {
 
     @Override
     public String toString() {
-      return vertex + " -> " + adjacentVertice + (
+      return vertex + " -> " + adjacentVertex + (
         weight != null
           ? " (" + weight + ")"
           : ""

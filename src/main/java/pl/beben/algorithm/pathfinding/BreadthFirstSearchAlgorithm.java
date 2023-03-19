@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import static lombok.AccessLevel.PRIVATE;
 import static pl.beben.algorithm.pathfinding.DigraphPathRetracingAlgorithm.retracePath;
 
@@ -20,9 +21,13 @@ public class BreadthFirstSearchAlgorithm {
    * It's faster than Dijkstra, but it doesn't care about edge's weights - which is why it's application is completely different.
    *
    * @param digraph a directed, unweighted graph
-   * @return see {@link pl.beben.algorithm.pathfinding.DigraphPathRetracingAlgorithm#retracePath(java.util.Map, Object, pl.beben.datastructure.Digraph.Edge)}
+   * @return see {@link pl.beben.algorithm.pathfinding.DigraphPathRetracingAlgorithm#retracePath(java.util.Map, Object)}
    */
   public static <VERTEX> List<Digraph.Edge<VERTEX>> findPath(Digraph<VERTEX> digraph, VERTEX beginning, VERTEX destination) {
+    return findPath(new HashSet<>(), digraph, beginning, destination);
+  }
+
+  public static <VERTEX> List<Digraph.Edge<VERTEX>> findPath(Set<VERTEX> exploredVertices, Digraph<VERTEX> digraph, VERTEX beginning, VERTEX destination) {
     log.debug("Beginning = {}, destination = {}", beginning, destination);
 
     if (beginning.equals(destination)) {
@@ -32,7 +37,6 @@ public class BreadthFirstSearchAlgorithm {
 
     final var exploredVerticeToEdge = new HashMap<VERTEX, Digraph.Edge<VERTEX>>();
 
-    final var exploredVertices = new HashSet<VERTEX>();
     exploredVertices.add(beginning);
 
     final var vertexQueue = new LinkedList<VERTEX>();
@@ -42,15 +46,15 @@ public class BreadthFirstSearchAlgorithm {
       final var vertex = vertexQueue.pollFirst();
       log.debug("Polled vertex {}", vertex);
 
-      for (final var edge : digraph.computeEdges(vertex)) {
-        final var adjacentVertice = edge.adjacentVertice();
+      for (final var edge : digraph.getEdges(vertex)) {
+        final var adjacentVertice = edge.adjacentVertex();
         final var vertexIsExploredForTheFirstTime = exploredVertices.add(adjacentVertice);
         if (!vertexIsExploredForTheFirstTime) {
-          log.debug("Tried to explore adjacentVertice {}, but it is already explored - continue", adjacentVertice);
+          log.debug("Tried to explore adjacentVertex {}, but it is already explored - continue", adjacentVertice);
           continue;
         }
 
-        log.debug("Exploring adjacentVertice {}", adjacentVertice);
+        log.debug("Exploring adjacentVertex {}", adjacentVertice);
         vertexQueue.addLast(adjacentVertice);
         exploredVerticeToEdge.put(adjacentVertice, edge);
 
@@ -61,7 +65,7 @@ public class BreadthFirstSearchAlgorithm {
       }
     }
 
-    return retracePath(exploredVerticeToEdge, destination, null);
+    return retracePath(exploredVerticeToEdge, destination);
   }
 
 }

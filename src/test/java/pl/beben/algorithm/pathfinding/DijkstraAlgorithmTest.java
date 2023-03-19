@@ -36,14 +36,14 @@ public class DijkstraAlgorithmTest {
 
     final var digraph = new Digraph<String>();
 
-    final var a = digraph.createVertice("a");
-    final var b = digraph.createVertice("b");
-    final var c = digraph.createVertice("c");
-    final var d = digraph.createVertice("d");
-    final var e = digraph.createVertice("e");
-    final var f = digraph.createVertice("f");
-    final var g = digraph.createVertice("g");
-    final var lonelyVertice = digraph.createVertice("Lonely  that's not connected to anything");
+    final var a = digraph.createVertex("a");
+    final var b = digraph.createVertex("b");
+    final var c = digraph.createVertex("c");
+    final var d = digraph.createVertex("d");
+    final var e = digraph.createVertex("e");
+    final var f = digraph.createVertex("f");
+    final var g = digraph.createVertex("g");
+    final var lonelyVertice = digraph.createVertex("Lonely  that's not connected to anything");
 
     // every second edge is a reversed version of it's previous
     final var ac = digraph.createEdge(a, c, 3);
@@ -97,8 +97,8 @@ public class DijkstraAlgorithmTest {
   public void canHandleLoops() {
     // given
     final var digraph = new Digraph<String>();
-    final var a = digraph.createVertice("a");
-    final var b = digraph.createVertice("b");
+    final var a = digraph.createVertex("a");
+    final var b = digraph.createVertex("b");
 
     final var aa = digraph.createEdge(a, a, 1);
     final var ab = digraph.createEdge(a, b, 3);
@@ -115,8 +115,8 @@ public class DijkstraAlgorithmTest {
   public void throwsExceptionWhenEncountersNegative() {
     // given
     final var digraph = new Digraph<String>();
-    final var a = digraph.createVertice("a");
-    final var b = digraph.createVertice("b");
+    final var a = digraph.createVertex("a");
+    final var b = digraph.createVertex("b");
 
     final var aa = digraph.createEdge(a, a, 1);
     final var ab = digraph.createEdge(a, b, -3);

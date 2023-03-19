@@ -25,16 +25,16 @@ public class BreadthFirstSearchAlgorithmTest {
     //
     final var digraph = new Digraph<String>();
 
-    final var a = digraph.createVertice("a");
-    final var b = digraph.createVertice("b");
-    final var c = digraph.createVertice("c");
-    final var d = digraph.createVertice("d");
-    final var e = digraph.createVertice("e");
-    final var f = digraph.createVertice("f");
-    final var g = digraph.createVertice("g");
-    final var h = digraph.createVertice("h");
-    final var i = digraph.createVertice("i");
-    final var j = digraph.createVertice("j");
+    final var a = digraph.createVertex("a");
+    final var b = digraph.createVertex("b");
+    final var c = digraph.createVertex("c");
+    final var d = digraph.createVertex("d");
+    final var e = digraph.createVertex("e");
+    final var f = digraph.createVertex("f");
+    final var g = digraph.createVertex("g");
+    final var h = digraph.createVertex("h");
+    final var i = digraph.createVertex("i");
+    final var j = digraph.createVertex("j");
 
     final var ab = digraph.createEdge(a, b);
     final var bc = digraph.createEdge(b, c);
